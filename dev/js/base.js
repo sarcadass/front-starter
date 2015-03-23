@@ -1,0 +1,3 @@
+function base(arg) {
+    //base
+}

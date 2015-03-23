@@ -1,0 +1,31 @@
+{
+  "sass": {
+    "activate": true,
+    "compression": "compact",
+    "input": "dev/sass/",
+    "src": ["**/*.scss"],
+    "output": "dist/css/",
+    "extension": ".css"
+  },
+
+  "css": {
+    "concatenation": true,
+    "input": ["dist/css/base.css", "dist/css/responsive.css"],
+    "cleanInput": true,
+    "output": "dist/css/style.css"
+  },
+
+  "js": {
+    "uglify": true,
+    "beautify": false,
+    "input": "dev/js/",
+    "src": ["**/*.js"],
+    "output": "dist/js/",
+    "extension": ".js",
+
+    "concatenation": true,
+    "concatInput": ["dist/js/base.js", "dist/js/responsive.js"],
+    "cleanInput": true,
+    "concatOutput": "dist/js/script.js"
+  }
+}
