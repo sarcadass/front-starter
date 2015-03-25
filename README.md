@@ -24,6 +24,7 @@ In this file you can activate the different tasks and set the different paths of
 
 ### How can I use this plugin? ###
 
+`npm install front-starter` or clone this repo.
 When you have cloned this repo, run a ` npm install `, this will download all the project dependencies
 
 **You can use different functions to build manually your project:**
