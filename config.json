@@ -2,30 +2,30 @@
   "sass": {
     "activate": true,
     "compression": "compact",
-    "input": "dev/sass/",
+    "input": "../dev/sass/",
     "src": ["**/*.scss"],
-    "output": "dist/css/",
+    "output": "../dist/css/",
     "extension": ".css"
   },
 
   "css": {
     "concatenation": true,
-    "input": ["dist/css/base.css", "dist/css/responsive.css"],
+    "input": ["../dist/css/base.css", "../dist/css/responsive.css"],
     "cleanInput": true,
-    "output": "dist/css/style.css"
+    "output": "../dist/css/style.css"
   },
 
   "js": {
     "uglify": true,
     "beautify": false,
-    "input": "dev/js/",
+    "input": "../dev/js/",
     "src": ["**/*.js"],
-    "output": "dist/js/",
+    "output": "../dist/js/",
     "extension": ".js",
 
     "concatenation": true,
-    "concatInput": ["dist/js/base.js", "dist/js/responsive.js"],
+    "concatInput": ["../dist/js/base.js", "../dist/js/responsive.js"],
     "cleanInput": true,
-    "concatOutput": "dist/js/script.js"
+    "concatOutput": "../dist/js/script.js"
   }
 }

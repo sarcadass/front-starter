@@ -82,7 +82,7 @@ module.exports = function(grunt) {
                 options: {
                     trace: true,
                     sourcemap: 'none',
-                    style: '<%= conf.sass.compression %>' //nested, compact, compressed, expanded
+                    style: '<%= conf.sass.compression %>'
                 },
                 files: [{
                     expand: true,
@@ -104,6 +104,9 @@ module.exports = function(grunt) {
             }
         },
         clean: {
+            options: {
+                force: true
+            },
             css: options.cleanCssInput(),
             js:  options.cleanJsInput(),
             cssBefore: '<%= conf.css.output %>',
@@ -134,11 +137,11 @@ module.exports = function(grunt) {
             }
         }
     });
-    grunt.registerTask('build',    options.buildTasks());
-    grunt.registerTask('buildCss', options.buildCssTasks());
-    grunt.registerTask('buildJs',  options.buildJsTasks());
-    grunt.registerTask('watchCss', ['watch:css']);
-    grunt.registerTask('watchJs',  ['watch:js']);
+    grunt.registerTask('build', 'Build the project (CSS & JS)', options.buildTasks());
+    grunt.registerTask('buildCss', 'Build the CSS', options.buildCssTasks());
+    grunt.registerTask('buildJs', 'Build the JS', options.buildJsTasks());
+    grunt.registerTask('watchCss', 'Watch for CSS changes, then build the CSS', ['watch:css']);
+    grunt.registerTask('watchJs', 'Watch for JS changes, then build the JS', ['watch:js']);
 
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-sass');
