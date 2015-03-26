@@ -1,6 +1,6 @@
 {
   "name": "front-starter",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Configure Grunt tasks like a breeze ! Configure Grunt tasks with a config.json file to use SASS, uglify, concat, watch... without editing the Gruntfile.js",
   "author": "Benjamin Blonde",
   "main": "Gruntfile.js",
