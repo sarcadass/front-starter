@@ -2,76 +2,81 @@
 module.exports = function(grunt) {
     var options = {
         conf: grunt.file.readJSON("config.json"),
-        buildTasks: function() {
-            var tasks = [];
-            if (this.conf.sass.activate     === true) tasks.push('sass');
-            if (this.conf.css.concatenation === true) tasks.push('concat:css', 'clean:css');
-            if (this.conf.js.uglify         === true) tasks.push('uglify');
-            if (this.conf.js.concatenation  === true) tasks.push('concat:js', 'clean:js');
-            if (tasks.length === 0) {
-                return grunt.log.error('No task was set in config.json');
-            } else {
-                return tasks
+        buildTasks: function(type, currentTasks) {
+            var tasks = currentTasks || [];
+            switch (type) {
+                case 'css':
+                    if (this.conf.sass.activate     === true) tasks.push('sass');
+                    if (this.conf.css.concatenation === true) tasks.push('clean:cssBefore', 'concat:css');
+                    if (this.conf.css.concatenation === true && this.conf.css.cleanConcatInput === true) {
+                        tasks.push('clean:css');
+                    }
+                    return tasks;
+                break;
+
+                case 'js':
+                    if (this.conf.js.uglify         === true) tasks.push('uglify');
+                    if (this.conf.js.concatenation  === true) tasks.push('clean:jsBefore', 'concat:js');
+                    if (this.conf.js.concatenation  === true && this.conf.js.cleanConcatInput === true) {
+                        tasks.push('clean:js');
+                    }
+                    return tasks;
+                break;
+
+                case 'all':
+                    tasks = this.buildTasks('css');
+                    this.buildTasks('js', tasks);
+                    if (tasks.length === 0) {
+                        return grunt.log.error('No task was set in config.json');
+                    } else {
+                        return tasks
+                    }
+                break;
             }
         },
-        buildCssTasks: function() {
-            var tasks = [];
-            if (this.conf.sass.activate     === true) tasks.push('sass');
-            if (this.conf.css.concatenation === true) tasks.push('clean:cssBefore', 'concat:css');
-            if (this.conf.css.concatenation === true && this.conf.css.cleanInput === true)
-                tasks.push('clean:css');
-            return tasks;
-        },
-        buildJsTasks: function() {
-            var tasks = [];
-            if (this.conf.js.uglify        === true) tasks.push('uglify');
-            if (this.conf.js.concatenation === true) tasks.push('clean:jsBefore', 'concat:js');
-            if (this.conf.js.concatenation === true && this.conf.js.cleanInput === true)
-                tasks.push('clean:js');
-            return tasks;
-        },
-        cleanCssInput: function() {
-            var src = this.conf.css.input;
+
+        cleanInput: function(type) {
+            var src, output;
+            if (type === 'css') {
+                src = this.conf.css.concatInput;
+                output =  this.conf.css.output;
+            } else if (type === 'js') {
+                src = this.conf.js.concatInput;
+                output =  this.conf.js.output;
+            }
             src = src.toString();
-            src = src + ',!' + this.conf.css.output;
+            src +=  ',!' + output;
             src = src.split(',');
             return src
         },
-        cleanJsInput: function() {
-            var src = this.conf.js.concatInput;
-            src = src.toString();
-            src = src + ',!' + this.conf.js.concatOutput;
-            src = src.split(',');
-            return src
-        },
-        watchCssFiles: function() {
-            var sassInput = this.conf.sass.input,
-                sassSrc = this.conf.sass.src,
-                i = 0;
-            if (this.conf.sass.activate === true && this.conf.css.concatenation === true) {
-                for (i; i < sassSrc.length; i++) {
-                    sassSrc[i] = sassInput + sassSrc[i];
-                }
-                return sassSrc;
-            } else if (this.conf.css.concatenation === true) {
-                return this.conf.css.input
-            } else {
-                return {}
+
+        watchFiles: function(type) {
+            var i, input, src, concat, task, concatInput;
+            if (type === 'css') {
+                input = this.conf.sass.input;
+                src = this.conf.sass.src;
+                task = this.conf.sass.activate;
+                concat = this.conf.css.concatenation;
+                concatInput = this.conf.css.concatInput;
+            } else if (type === 'js') {
+                input = this.conf.js.input;
+                src = this.conf.js.src;
+                task = this.conf.js.uglify;
+                concat = this.conf.js.concatenation;
+                concatInput = this.conf.js.concatInput;
             }
-        },
-        watchJsFiles: function() {
-            var jsInput = this.conf.js.input,
-                jsSrc = this.conf.js.src,
-                i = 0;
-            if (this.conf.js.uglify === true && this.conf.js.concatenation === true) {
-                for (i; i < jsSrc.length; i++) {
-                    jsSrc[i] = jsInput + jsSrc[i];
+
+            if (task === true && concat === true) {
+                for (i = 0; i < src.length; i++) {
+                    src[i] = input + src[i];
                 }
-                return jsSrc;
-            } else if (this.conf.js.concatenation === true) {
-                return this.conf.js.concatInput
+                return src;
+
+            } else if (task === false && concat === true) {
+                return concatInput;
+
             } else {
-                return {}
+                return [];
             }
         }
     };
@@ -95,7 +100,7 @@ module.exports = function(grunt) {
         },
         concat: {
             css: {
-                src:  '<%= conf.css.input %>',
+                src:  '<%= conf.css.concatInput %>',
                 dest: '<%= conf.css.output %>'
             },
             js: {
@@ -107,8 +112,8 @@ module.exports = function(grunt) {
             options: {
                 force: true
             },
-            css: options.cleanCssInput(),
-            js:  options.cleanJsInput(),
+            css: options.cleanInput('css'),
+            js:  options.cleanInput('js'),
             cssBefore: '<%= conf.css.output %>',
             jsBefore:  '<%= conf.js.concatOutput %>'
         },
@@ -128,18 +133,18 @@ module.exports = function(grunt) {
         },
         watch: {
             css: {
-                files: options.watchCssFiles(),
-                tasks: options.buildCssTasks()
+                files: options.watchFiles('css'),
+                tasks: options.buildTasks('css')
             },
             js: {
-                files: options.watchJsFiles(),
-                tasks: options.buildJsTasks()
+                files: options.watchFiles('js'),
+                tasks: options.buildTasks('js')
             }
         }
     });
-    grunt.registerTask('build', 'Build the project (CSS & JS)', options.buildTasks());
-    grunt.registerTask('buildCss', 'Build the CSS', options.buildCssTasks());
-    grunt.registerTask('buildJs', 'Build the JS', options.buildJsTasks());
+    grunt.registerTask('build', 'Build the project (CSS & JS)', options.buildTasks('all'));
+    grunt.registerTask('buildCss', 'Build the CSS', options.buildTasks('css'));
+    grunt.registerTask('buildJs', 'Build the JS', options.buildTasks('js'));
     grunt.registerTask('watchCss', 'Watch for CSS changes, then build the CSS', ['watch:css']);
     grunt.registerTask('watchJs', 'Watch for JS changes, then build the JS', ['watch:js']);
 
