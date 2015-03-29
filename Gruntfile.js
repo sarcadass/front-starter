@@ -66,7 +66,7 @@ module.exports = function(grunt) {
                 concatInput = this.conf.js.concatInput;
             }
 
-            if (task === true && concat === true) {
+            if (task === true) {
                 for (i = 0; i < src.length; i++) {
                     src[i] = input + src[i];
                 }
