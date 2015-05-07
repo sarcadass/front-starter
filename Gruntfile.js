@@ -2,11 +2,13 @@
 module.exports = function(grunt) {
     var options = {
         conf: grunt.file.readJSON("config.json"),
+
         buildTasks: function(type, currentTasks) {
             var tasks = currentTasks || [];
             switch (type) {
                 case 'css':
                     if (this.conf.sass.activate     === true) tasks.push('sass');
+                    if (this.conf.less.activate     === true) tasks.push('less');
                     if (this.conf.css.concatenation === true) tasks.push('clean:cssBefore', 'concat:css');
                     if (this.conf.css.concatenation === true && this.conf.css.cleanConcatInput === true) {
                         tasks.push('clean:css');
@@ -53,11 +55,21 @@ module.exports = function(grunt) {
         watchFiles: function(type) {
             var i, input, src, concat, task, concatInput;
             if (type === 'css') {
-                input = this.conf.sass.input;
-                src = this.conf.sass.src;
-                task = this.conf.sass.activate;
+                if (this.conf.sass.activate === true) {
+                    //Mapping Sass watched files
+                    input = this.conf.sass.input;
+                    src = this.conf.sass.src;
+                    task = this.conf.sass.activate;
+
+                } else if (this.conf.less.activate === true) {
+                    //Mapping LESS watched files
+                    input = this.conf.less.input;
+                    src = this.conf.less.src;
+                    task = this.conf.less.activate;
+                }
                 concat = this.conf.css.concatenation;
                 concatInput = this.conf.css.concatInput;
+
             } else if (type === 'js') {
                 input = this.conf.js.input;
                 src = this.conf.js.src;
@@ -82,6 +94,7 @@ module.exports = function(grunt) {
     };
     grunt.initConfig({
         conf: grunt.file.readJSON("config.json"),
+
         sass: {
             dist: {
                 options: {
@@ -98,6 +111,23 @@ module.exports = function(grunt) {
                 }]
             }
         },
+
+        less: {
+            dist: {
+                options: {
+                    compress: '<%= conf.less.compression %>',
+                    ieCompat: '<%= conf.less.ieCompat %>'
+                },
+                files: [{
+                    expand: true,
+                    cwd:  '<%= conf.less.input %>',
+                    src:  '<%= conf.less.src %>',
+                    dest: '<%= conf.less.output %>',
+                    ext:  '<%= conf.less.extension %>'
+                }]
+            }
+        },
+
         concat: {
             css: {
                 src:  '<%= conf.css.concatInput %>',
@@ -108,6 +138,7 @@ module.exports = function(grunt) {
                 dest: '<%= conf.js.concatOutput %>'
             }
         },
+
         clean: {
             options: {
                 force: true
@@ -117,6 +148,7 @@ module.exports = function(grunt) {
             cssBefore: '<%= conf.css.output %>',
             jsBefore:  '<%= conf.js.concatOutput %>'
         },
+
         uglify: {
             dist: {
                 options: {
@@ -131,6 +163,7 @@ module.exports = function(grunt) {
                 }]
             }
         },
+
         watch: {
             css: {
                 files: options.watchFiles('css'),
@@ -142,14 +175,16 @@ module.exports = function(grunt) {
             }
         }
     });
-    grunt.registerTask('build', 'Build the project (CSS & JS)', options.buildTasks('all'));
+
+    grunt.registerTask('build',    'Build the project (CSS & JS)', options.buildTasks('all'));
     grunt.registerTask('buildCss', 'Build the CSS', options.buildTasks('css'));
-    grunt.registerTask('buildJs', 'Build the JS', options.buildTasks('js'));
+    grunt.registerTask('buildJs',  'Build the JS', options.buildTasks('js'));
     grunt.registerTask('watchCss', 'Watch for CSS changes, then build the CSS', ['watch:css']);
-    grunt.registerTask('watchJs', 'Watch for JS changes, then build the JS', ['watch:js']);
+    grunt.registerTask('watchJs',  'Watch for JS changes, then build the JS', ['watch:js']);
 
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-watch');

@@ -1,6 +1,6 @@
 {
   "sass": {
-    "activate": true,
+    "activate": false,
     "compression": "compact",
     "input": "test/dev/sass/",
     "src": ["**/*.scss"],
@@ -8,8 +8,18 @@
     "extension": ".css"
   },
 
+  "less": {
+    "activate": true,
+    "compression": false,
+    "ieCompat": true,
+    "input": "test/dev/less/",
+    "src": ["*.less"],
+    "output": "test/dist/css/",
+    "extension": ".css"
+  },
+
   "css": {
-    "concatenation": true,
+    "concatenation": false,
     "concatInput": ["test/dist/css/base.css", "test/dist/css/responsive.css"],
     "output": "test/dist/css/style.css",
     "cleanConcatInput": true
