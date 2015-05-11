@@ -2,7 +2,7 @@
 [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
 Configure [Grunt](http://gruntjs.com/) tasks like a breeze !
-This repo provides an easy way to configure Grunt tasks  with a config.json file to use SASS, uglify, concat, watch... without editing the Gruntfile.js
+This repo provides an easy way to configure Grunt tasks  with a config.json file to use Sass, Less, Uglify, Concat, Watch... without editing the Gruntfile.js
 
 `npm install front-starter` 
 
@@ -38,10 +38,14 @@ Or you can **watch for file modification** to build your project:
 
 
 
-### Extra configuration for config.json: ###
+### Extra info on config.json configuration: ###
 
-* You can choose between 4 options for the _sass.compression_:
+* You can choose between 4 options for the **sass.compression**:
     * 'nested'
     * 'compact'
     * 'compressed'
     * 'expanded'
+
+* **less.ieCompat**: Enforce the CSS output is compatible with Internet Explorer 8.
+
+* **css.cleanConcatInput**: Remove the ConcatInput files after concatenation
