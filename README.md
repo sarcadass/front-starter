@@ -1,7 +1,7 @@
 # Front-Starter #
 [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
-Configure [Grunt](http://gruntjs.com/) tasks like a breeze !
+Configure [Grunt](http://gruntjs.com/) tasks like a breeze!
 This repo provides an easy way to configure Grunt tasks  with a config.json file to use Sass, Less, Uglify, Concat, Watch... without editing the Gruntfile.js
 
 `npm install front-starter` 
