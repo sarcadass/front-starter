@@ -10,12 +10,13 @@
 
   "less": {
     "activate": true,
-    "compression": false,
-    "ieCompat": true,
     "input": "test/dev/less/",
     "src": ["*.less"],
     "output": "test/dist/css/",
-    "extension": ".css"
+    "extension": ".css",
+    "compression": false,
+    "ieCompat": true,
+    "sourceMap": true
   },
 
   "css": {

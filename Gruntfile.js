@@ -62,7 +62,7 @@ module.exports = function(grunt) {
                     task = this.conf.sass.activate;
 
                 } else if (this.conf.less.activate === true) {
-                    //Mapping LESS watched files
+                    //Mapping Less watched files
                     input = this.conf.less.input;
                     src = this.conf.less.src;
                     task = this.conf.less.activate;
@@ -115,8 +115,9 @@ module.exports = function(grunt) {
         less: {
             dist: {
                 options: {
-                    compress: '<%= conf.less.compression %>',
-                    ieCompat: '<%= conf.less.ieCompat %>'
+                    compress:  '<%= conf.less.compression %>',
+                    ieCompat:  '<%= conf.less.ieCompat %>',
+                    sourceMap: '<%= conf.less.sourceMap %>'
                 },
                 files: [{
                     expand: true,
