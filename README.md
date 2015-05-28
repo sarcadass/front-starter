@@ -28,13 +28,13 @@ In this file you can activate the different tasks and set the different paths of
 You can use different functions to **build manually** your project:
 
 * ` grunt build ` : will execute every task set in the config.json
-* ` grunt buildCss ` : will execute every SASS/CSS task set in the config.json
-* ` grunt buildJs ` : will execute every JS task set in the config.json
+* ` grunt buildCss ` : will execute every CSS related task (Sass/Less...) set in the config.json
+* ` grunt buildJs ` : will execute every JS related task set in the config.json
 
 Or you can **watch for file modification** to build your project:
 
-* ` grunt watchCss ` : will execute every SASS/CSS task set in the config.json, when original files are modified
-* ` grunt watchJs ` : will execute every JS task set in the config.json, when original files are modified
+* ` grunt watchCss ` : will execute every CSS related task (Sass/Less...) set in the config.json, when original files are modified
+* ` grunt watchJs ` : will execute every JS related task set in the config.json, when original files are modified
 
 
 
