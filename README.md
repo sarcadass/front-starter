@@ -1,6 +1,13 @@
 # Front-Starter #
 [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
+***
+
+**THIS REPO IS NO LONGER MAINTAINED, USE [GULPIT](https://www.npmjs.com/package/gulpit) INSTEAD.**
+
+***
+
+
 Configure [Grunt](http://gruntjs.com/) tasks like a breeze!
 This repo provides an easy way to configure Grunt tasks  with a config.json file to use Sass, Less, Uglify, Concat, Watch... without editing the Gruntfile.js
 
